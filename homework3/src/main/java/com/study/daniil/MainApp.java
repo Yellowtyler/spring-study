@@ -42,19 +42,20 @@ public class MainApp {
         }
     }
 
-    public static void increaseOptimistic(Long randomNum) {
+    public static void increaseOptimistic(Long randomNum, User user) {
         Session session = sf.getCurrentSession();
         session.beginTransaction();
         Lot lot = (Lot) session.createQuery("from Lot where id=:id").setParameter("id", randomNum).
                 setLockMode(LockModeType.OPTIMISTIC).
                 uniqueResult();
         lot.setBet(lot.getBet() + 100);
+        lot.setUser(user);
         session.update(lot);
         try {
             session.getTransaction().commit();
         } catch (OptimisticLockException e) {
             session.getTransaction().rollback();
-            increaseOptimistic(randomNum);
+            increaseOptimistic(randomNum, user);
         } finally {
             if (session != null) {
                 session.close();
@@ -62,7 +63,7 @@ public class MainApp {
         }
     }
 
-    public static void increasePessimistic(Long randomNum) {
+    public static void increasePessimistic(Long randomNum, User user) {
         Session session = sf.getCurrentSession();
         try {
             session.beginTransaction();
@@ -70,6 +71,7 @@ public class MainApp {
                     setLockMode(LockModeType.PESSIMISTIC_WRITE).
                     uniqueResult();
             lot.setBet(lot.getBet() + 100);
+            lot.setUser(user);
             session.update(lot);
             session.getTransaction().commit();
         }
@@ -96,7 +98,7 @@ public class MainApp {
     }
 
     //Pessimistic: 10793
-    //Optimistic: 14974
+    //Optimistic: 13750
     public static void main(String[] args) {
         forcePrepareData();
         SessionFactory sf = new Configuration()
@@ -105,6 +107,7 @@ public class MainApp {
         final CountDownLatch cdl = new CountDownLatch(8);
         for (int i = 0; i < 8; i++) {
             long finalI = i;
+
             new Thread(()->{
                 Session session = sf.getCurrentSession();
                 session.beginTransaction();
@@ -115,8 +118,8 @@ public class MainApp {
                 }
                 for (int j = 0; j < 1000; j++) {
                     int randomNum = ThreadLocalRandom.current().nextInt(1, 5);
-                    increasePessimistic((long) randomNum);
-                    //increaseOptimistic((long) randomNum);
+                    //increasePessimistic((long) randomNum, user);
+                    increaseOptimistic((long) randomNum, user);
                 }
                 cdl.countDown();
             }).start();
