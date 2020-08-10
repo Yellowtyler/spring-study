@@ -14,7 +14,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findUserById(Long id) throws UserNotFoundException {
+    public User findUserById(Long id) {
        return userRepository.findById(id).orElseThrow(()->new UserNotFoundException("Пользователь с id " + id + " не найден!"));
     }
 
@@ -22,7 +22,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void removeUserById(Long id) {
+        userRepository.deleteById(id);
     }
 }

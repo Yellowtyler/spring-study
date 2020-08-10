@@ -14,7 +14,7 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public Item findItemById(Long id) throws ItemNotFoundException {
+    public Item findItemById(Long id) {
        return itemRepository.findById(id).orElseThrow(()->new ItemNotFoundException("Товар с id " + id + " не найден!"));
     }
 
@@ -22,7 +22,11 @@ public class ItemService {
        return itemRepository.findAll();
     }
 
-    public void saveItem(Item item) {
-        itemRepository.save(item);
+    public Item saveItem(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public void removeItemById(Long id) {
+        itemRepository.deleteById(id);
     }
 }
