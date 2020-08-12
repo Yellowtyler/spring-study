@@ -17,7 +17,6 @@
     <br>
     <h4>Фильтр:</h4>
     <form th:action="@{'/books'}" method="get">
-
         <div class="form-group">
             <input th:value="${pageIndex}" hidden class="form-control form-control-sm" type="number" name="p">
 
@@ -30,19 +29,11 @@
             <label>Максимальная цена</label>
             <input th:value="${param.maxPrice != null ? param.maxPrice : null}" type="number" class="form-control form-control-sm" name="maxPrice">
 
-            <input th:value="${param.genre != null  ? param.titlePart : null}" hidden class="form-control form-control-sm" type="number" name="p">
-<!--            <div class="container">-->
-<!--            <input type="checkbox" class="form-check-input" id="FANTASY" th:value="${param.fantasy != null ? param.fantasy : null}">-->
-<!--            <label class="form-check-label" for="FANTASY">Фэнтези</label>-->
-<!--            </div >-->
-            <div class="container">
-            <input type="checkbox" class="form-check-input" id="FANTASTIC" name="fantastic" th:value="${param.fantasy != null ? param.fantasy : null}">
-            <label class="form-check-label" for="FANTASTIC">Фантастика</label>
-            </div>
-<!--            <div class="container">-->
-<!--            <input type="checkbox" class="form-check-input" id="DETECTIVE" th:value="${param.fantasy != null ? param.fantasy : null}">-->
-<!--            <label class="form-check-label" for="DETECTIVE">Детектив</label>-->
-<!--            </div>-->
+            <th:block th:each="g : ${genres}">
+                <input th:value="true" type="checkbox" th:name="${g.name()}" th:checked="${param.get(g.name())}"> <span
+                    th:text="${g.getStr()}"></span> <br>
+            </th:block>
+
         </div>
         <button type="submit" class="btn btn-primary">Применить</button>
     </form>
@@ -66,18 +57,23 @@
             <td th:text="${b.description}"></td>
             <td th:text="${b.price}"></td>
             <td th:text="${b.publishYear}"></td>
-            <td th:text="${b.genre}"></td>
+            <td th:text="${b.genre.getStr()}"></td>
         </tr>
         </tbody>
     </table>
-
     <nav aria-label="Page navigation example">
         <div class="pagination">
-            <li class="page-item"><a class="page-link" th:href="@{/books(p=${pageIndex-1}, maxPrice=${param.maxPrice != null ? param.maxPrice : null}, minPrice=${param.minPrice != null ? param.minPrice : null}, titlePart=${param.titlePart != null ? param.titlePart : null})}" th:if="${pageIndex>1}">Previous</a></li>
+            <li class="page-item"><a class="page-link"
+                                      th:href="@{'/books/?p=' + ${pageIndex-1} + ${strParams}}"
+                                      th:if="${pageIndex>1}">Previous</a></li>
             <div th:each="pageNumber : ${pageNumbers}">
-                <li class="page-item"><a class="page-link" th:href="@{/books(p=${pageNumber}, maxPrice=${param.maxPrice != null ? param.maxPrice : null}, minPrice=${param.minPrice != null ? param.minPrice : null}, titlePart=${param.titlePart != null ? param.titlePart : null})}" th:text="${pageNumber}" ></a></li>
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{'/books/?p=' + ${pageNumber} + ${strParams}}"
+                                         th:text="${pageNumber}"></a></li>
             </div>
-            <li class="page-item"><a class="page-link" th:href="@{/books(p=${pageIndex+1}, maxPrice=${param.maxPrice != null ? param.maxPrice : null}, minPrice=${param.minPrice != null ? param.minPrice : null}, titlePart=${param.titlePart != null ? param.titlePart : null})}" th:if="${pageIndex < pageNumbers.size()}">Next</a></li>
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/books/?p=' + ${pageIndex+1} + ${strParams}}"
+                                     th:if="${pageIndex < pageNumbers.size()}">Next</a></li>
         </div>
     </nav>
 </div>

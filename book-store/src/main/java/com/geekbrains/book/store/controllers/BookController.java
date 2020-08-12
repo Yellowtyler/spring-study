@@ -1,12 +1,11 @@
 package com.geekbrains.book.store.controllers;
 
 import com.geekbrains.book.store.entities.Book;
-import com.geekbrains.book.store.repositories.specifications.BookSpecifications;
+import com.geekbrains.book.store.entities.Genre;
 import com.geekbrains.book.store.services.BookService;
 import com.geekbrains.book.store.utils.BookFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +36,8 @@ public class BookController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
             model.addAttribute("pageIndex", pageIndex);
+            model.addAttribute("genres", Genre.values());
+            model.addAttribute("strParams", bookFilter.getFilterParams());
         }
         return "store-page";
     }
