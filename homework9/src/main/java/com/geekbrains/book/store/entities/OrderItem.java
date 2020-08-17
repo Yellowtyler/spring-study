@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Data
 @Entity
@@ -21,18 +21,15 @@ public class OrderItem {
     @Column(name="price")
     private Integer price;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+    private Long bookId;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public OrderItem(Integer count, Integer price, Book book, Order order) {
+    public OrderItem(Integer count, Integer price, Long bookId) {
         this.count = count;
         this.price = price;
-        this.book = book;
-        this.order = order;
+        this.bookId = bookId;
     }
 }

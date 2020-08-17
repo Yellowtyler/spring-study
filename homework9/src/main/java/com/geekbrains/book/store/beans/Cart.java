@@ -1,6 +1,7 @@
 package com.geekbrains.book.store.beans;
 
 import com.geekbrains.book.store.entities.Book;
+import com.geekbrains.book.store.entities.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
@@ -16,5 +17,5 @@ import java.util.List;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
-    private List<Book> books = new ArrayList<>();
+    private List<OrderItem> orderItems;
 }

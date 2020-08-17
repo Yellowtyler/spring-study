@@ -27,14 +27,15 @@ public class CartController {
     private OrderRepository orderRepository;
     private OrderItemRepository orderItemRepository;
     @PostMapping
-    public String addBook(@ModelAttribute Book book) {
-        cart.getBooks().add(book);
+    public String addBook(@ModelAttribute Book book, @RequestParam Integer count) {
+        OrderItem orderItem = new OrderItem(count, book.getPrice().intValue(), book.getId());
+        cart.getOrderItems().add(orderItem);
         return "redirect:/books";
     }
 
     @GetMapping
     public String getCart(Model model) {
-        model.addAttribute("books", cart.getBooks());
+        model.addAttribute("items", cart.getOrderItems());
         return "cart-page";
     }
 
@@ -42,22 +43,20 @@ public class CartController {
     public String orderItem(@RequestParam(name = "count") Integer count, Principal principal, Cart cart) {
         User user = userService.findByUsername(principal.getName()).get();
         Order order = new Order(user);
-        orderRepository.save(order);
-        for (Book book : cart.getBooks()) {
-            OrderItem orderItem = new OrderItem(
-                    count, count*book.getPrice().intValue(),
-                    book, order
-            );
-            orderItemRepository.save(orderItem);
+        for (OrderItem item : cart.getOrderItems()) {
+            item.setOrder(order);
+            orderItemRepository.save(item);
         }
-        cart.getBooks().clear();
+        orderRepository.save(order);
         return "redirect:/";
     }
 
     @PostMapping("/remove")
-    public String removeFromCart(@ModelAttribute Book book) {
-        cart.getBooks().remove(book);
+    public String removeFromCart(@ModelAttribute OrderItem orderItem) {
+        cart.getOrderItems().remove(orderItem);
         return "redirect:/cart";
     }
+
+
 
 }
