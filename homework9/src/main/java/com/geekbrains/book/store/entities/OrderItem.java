@@ -1,13 +1,13 @@
 package com.geekbrains.book.store.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 
-
+@ToString
 @NoArgsConstructor
 @Data
 @Entity
@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class OrderItem {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name="count")
     private Integer count;

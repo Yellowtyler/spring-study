@@ -1,6 +1,5 @@
 package com.geekbrains.book.store.beans;
 
-import com.geekbrains.book.store.entities.Book;
 import com.geekbrains.book.store.entities.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
