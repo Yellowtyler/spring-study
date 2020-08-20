@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Book store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{navigation :: navigation(BookStore)}"/>
+
+    <h1>Магазин книг</h1>
+    <br>
+    <h4>Фильтр:</h4>
+    <form th:action="@{'/books'}" method="get">
+        <div class="form-group">
+            <input th:value="${pageIndex}" hidden class="form-control form-control-sm" type="number" name="p">
+
+            <label>Название</label>
+            <input th:value="${param.titlePart != null ? param.titlePart : null}" type="text" class="form-control form-control-sm" name="titlePart">
+
+            <label>Минимальная цена</label>
+            <input th:value="${param.minPrice != null ? param.minPrice : null}" type="number" class="form-control form-control-sm" name="minPrice">
+
+            <label>Максимальная цена</label>
+            <input th:value="${param.maxPrice != null ? param.maxPrice : null}" type="number" class="form-control form-control-sm" name="maxPrice">
+
+            <th:block th:each="g : ${genres}">
+                <input th:value="true" type="checkbox" th:name="${g.name()}" th:checked="${param.get(g.name())}"> <span
+                    th:text="${g.getStr()}"></span> <br>
+            </th:block>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Применить</button>
+    </form>
+
+    <br>
+    <br>
+    <h4>Список книг:</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Описание</td>
+            <td>Цена</td>
+            <td>Год издания</td>
+            <td>Жанр</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${books}">
+            <td th:text="${b.title}"></td>
+            <td th:text="${b.description}"></td>
+            <td th:text="${b.price}"></td>
+            <td th:text="${b.publishYear}"></td>
+            <td th:text="${b.genre.getStr()}"></td>
+            <td>
+                <form sec:authorize="isAuthenticated()" th:action="@{'/cart'}" method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.id}" name="id">
+                        <input hidden class="form-control form-control-sm" type="text" th:value="${b.title}" name="title">
+                        <input hidden class="form-control form-control-sm" type="text" th:value="${b.description}" name="description">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.price}" name="price" id="price">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.publishYear}" name="publishYear">
+
+                    </div>
+                    <div class="form-group">
+                        <input value="1" type="number" id="count" name="count" class="form-control input-number" min="1">
+                    </div>
+                    <button class="btn btn-primary"  type="submit">Заказать</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <div class="pagination">
+            <li class="page-item"><a class="page-link"
+                                      th:href="@{'/books/?p=' + ${pageIndex-1} + ${strParams}}"
+                                      th:if="${pageIndex>1}">Previous</a></li>
+            <div th:each="pageNumber : ${pageNumbers}">
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{'/books/?p=' + ${pageNumber} + ${strParams}}"
+                                         th:text="${pageNumber}"></a></li>
+            </div>
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/books/?p=' + ${pageIndex+1} + ${strParams}}"
+                                     th:if="${pageIndex < pageNumbers.size()}">Next</a></li>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
