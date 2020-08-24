@@ -8,7 +8,7 @@ app.config(function ($routeProvider) {
             controller: 'aboutController'
         })
         .when('/books', {
-            templateUrl: 'book-store.html',
+            templateUrl: 'store-page.html',
             controller: 'booksController'
         })
 });
@@ -34,10 +34,10 @@ app.controller('booksController', function ($scope, $http) {
             url = url +'&maxPrice=' + filterParams.maxPrice;
             if(filterParams.titlePart != null)
             url = url +'&titlePart=' + filterParams.titlePart;
-            angular.forEach($scope.filterBook.gen, function(value, key) {
-            if(value)
-                url = url + '&gen='+key;
-            });
+//            angular.forEach($scope.filterBook.gen, function(value, key) {
+//            if(value)
+//                url = url + '&gen='+key;
+//            });
         }
         if(angular.isString(filterParams)) url = url + filterParams;
 
