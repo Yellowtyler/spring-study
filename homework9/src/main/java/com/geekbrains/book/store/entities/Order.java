@@ -15,9 +15,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToMany(mappedBy = "order")
-//    private List<OrderItem> orderItems;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

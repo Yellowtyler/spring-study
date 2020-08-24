@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name="order_items")
 public class OrderItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="count")

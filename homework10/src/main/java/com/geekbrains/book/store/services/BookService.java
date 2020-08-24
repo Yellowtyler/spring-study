@@ -1,6 +1,7 @@
 package com.geekbrains.book.store.services;
 
 import com.geekbrains.book.store.entities.Book;
+import com.geekbrains.book.store.entities.dto.BookDto;
 import com.geekbrains.book.store.exceptions.ResourceNotFoundException;
 import com.geekbrains.book.store.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class BookService {
 
     public Page<Book> findAll(Specification<Book> spec, int page, int size) {
         return bookRepository.findAll(spec, PageRequest.of(page, size));
+    }
+
+    public List<BookDto> findAllDtos() {
+        return bookRepository.findAllBy();
     }
 
     public Book findById(Long id) {

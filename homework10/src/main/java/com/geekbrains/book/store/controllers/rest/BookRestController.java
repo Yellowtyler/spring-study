@@ -2,6 +2,7 @@ package com.geekbrains.book.store.controllers.rest;
 
 import com.geekbrains.book.store.entities.Book;
 import com.geekbrains.book.store.entities.Genre;
+import com.geekbrains.book.store.entities.dto.BookDto;
 import com.geekbrains.book.store.exceptions.ResourceNotFoundException;
 import com.geekbrains.book.store.services.BookService;
 import com.geekbrains.book.store.utils.BookFilter;
@@ -16,12 +17,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-//21ого августа утром-днем доделаю дз. Извиняюсь, что скинул недоделанное дз.
 @RestController
 @RequestMapping("/api/v1/books")
 @AllArgsConstructor
 public class BookRestController {
     private BookService bookService;
+
+
+    @GetMapping("/dtos")
+    public List<BookDto> getAllBookDtos() {
+        return bookService.findAllDtos();
+    }
 
     @GetMapping("/show")
     public Map showAllBooks(@RequestParam(name = "p", defaultValue = "1") Integer pageIndex,

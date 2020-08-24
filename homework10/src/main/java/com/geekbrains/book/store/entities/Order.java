@@ -9,11 +9,9 @@ import javax.persistence.*;
 @Table(name = "orders")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-
-//    @OneToMany(mappedBy = "order")
-//    private List<OrderItem> orderItems;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

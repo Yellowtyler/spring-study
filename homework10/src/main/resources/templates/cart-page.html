@@ -25,8 +25,10 @@
             </thead>
 
             <tbody>
+            <tr th:each="title : ${titles}">
+                <td th:text="${title}"></td>
+            </tr>
             <tr th:each="i : ${items}">
-                <td th:text="${i.getBook().getTitle()}"></td>
                 <td>
                     <input th:value="${i.count}" type="number" id="count" name="count" class="form-control input-number" onkeyup="multiply()" min="1">
                 </td>
@@ -34,7 +36,7 @@
                     <span id="totalPrice" name="totalPrice" th:text="${i.price}"/>
                 </td>
                 <td>
-                    <input hidden class="form-control form-control-sm" type="number" th:value="${i.getBook().getPrice()}" name="bookPrice" id="bookPrice">
+                    <input hidden class="form-control form-control-sm" type="number" th:value="${i.price}" name="bookPrice" id="bookPrice">
                 </td>
                 <td>
                     <form th:action="@{'/cart/remove'}" method="post" class="form-horizontal">

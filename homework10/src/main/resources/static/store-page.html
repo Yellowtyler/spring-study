@@ -1,7 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html ng-app="app" ng-controller="booksController">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Book store</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="app.component.ts"></script>
@@ -15,58 +16,9 @@
     form.submit();
 }
     </script>
+
 </head>
 <body>
-
-<h1>Книги:</h1>
-<table class="table table-hover" cellpadding="0" cellspacing="0">
-    <tr>
-        <td>Название</td>
-        <td>Жанр</td>
-        <td>Описание</td>
-        <td>Цена</td>
-        <td>Год издания</td>
-    </tr>
-    <tbody>
-    <tr ng-repeat="b in BooksList">
-        <td>{{b.title}}</td>
-        <td>{{b.genre}}</td>
-        <td>{{b.description}}</td>
-        <td>{{b.price}}</td>
-        <td>{{b.publishYear}}</td>
-    </tr>
-    </tbody>
-</table>
-
-<form novalidate ng-submit="submitCreateNewBook()">
-    <div class="card">
-        <div class="card-body">
-            <div>
-                <label for="newBookTitle">Название</label>
-                <input type="text" ng-model="newBook.title" id="newBookTitle">
-            </div>
-            <div>
-                <label for="newBookGenre">Жанр</label>
-                <input type="text" value="FANTASY" ng-model="newBook.genre" id="newBookGenre">
-            </div>
-            <div>
-                <label for="newBookDescription">Описание</label>
-                <input type="text" ng-model="newBook.description" id="newBookDescription">
-            </div>
-            <div>
-                <label for="newBookPrice">Цена</label>
-                <input type="number" ng-model="newBook.price" id="newBookPrice">
-            </div>
-            <div>
-                <label for="newBookPublishYear">Год издания</label>
-                <input type="number" ng-model="newBook.publishYear" id="newBookPublishYear">
-            </div>
-            <div>
-                <button type="submit">Сохранить</button>
-            </div>
-        </div>
-    </div>
-</form>
 <div class="container">
 
     <h1>Магазин книг</h1>
@@ -85,7 +37,11 @@
 
             <label>Жанры</label>
             <ul>
-
+                <!--<li ng-repeat="genre in allGenres">
+                     <input type="checkbox" ng-checked="checked" ng-value="genre" name="genre" ng-model="genre">
+                     <label>{{genre}}</label>
+                 </li>
+               -->
                 <li>
                     <input type="checkbox" ng-model="filterBook.gen['Фэнтези']">
                     <label>Фэнтези</label>
@@ -98,6 +54,8 @@
                     <input type="checkbox" ng-model="filterBook.gen['Детектив']">
                     <label>Детектив</label>
                 </li>
+
+                <!--   -->
             </ul>
             <div>
                 <button class="btn btn-primary" type="submit">Применить</button>
@@ -106,6 +64,31 @@
     </form>
     <br>
     <br>
+    <h4>Список книг:</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Описание</td>
+            <td>Цена</td>
+            <td>Год издания</td>
+            <td>Жанр</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="b in BooksList">
+            <td>{{b.title}}</td>
+            <td>{{b.description}}</td>
+            <td>{{b.price}}</td>
+            <td>{{b.publishYear}}</td>
+            <td>{{b.genreValue}}</td>
+            <!--<td>
+                <a class="btn btn-secondary" th:href="@{'/cart/add/?book_id=' + ${b.id}}">В корзину</a>
+            </td>-->
+        </tr>
+        </tbody>
+    </table>
+
     <nav>
         <ul class="pagination" ng-repeat="p in arrayPage" style="float:left">
             <li class="page-item"><a class="page-link"
