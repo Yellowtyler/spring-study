@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Book store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div th:replace="~{navigation :: navigation(Cart)}"/>
+
+        <h4>Корзина:</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+            </tr>
+            <tr>
+                <td>Название книги</td>
+                <td>Количество</td>
+                <td>Цена</td>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="title : ${titles}">
+                <td th:text="${title}"></td>
+            </tr>
+            <tr th:each="i : ${items}">
+
+                <td>
+                    <input th:value="${i.count}" type="number" id="count" name="count" class="form-control input-number" onkeyup="multiply()" min="1">
+                </td>
+                <td>
+                    <span id="totalPrice" name="totalPrice" th:text="${i.price}"/>
+                </td>
+                <td>
+                    <input hidden class="form-control form-control-sm" type="number" th:value="${i.price}" name="bookPrice" id="bookPrice">
+                </td>
+                <td>
+                    <form th:action="@{'/cart/remove'}" method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <input hidden class="form-control form-control-sm" type="number" th:value="${i.count}" name="count">
+                            <input hidden class="form-control form-control-sm" type="number" th:value="${i.price}" name="price">
+                            <input hidden class="form-control form-control-sm" type="number" th:value="${i.bookId}" name="bookId">
+                        </div>
+                        <button class="btn btn-primary"  type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:action="@{'/cart/add'}" method="post" class="form-horizontal">
+            <button class="btn btn-primary"type="submit">Оформить заказ</button>
+        </form>
+    </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        function multiply() {
+            console.log('a');
+            a = Number(document.getElementById('count').value);
+            b = Number(document.getElementById('bookPrice').value);
+            c = a*b;
+            document.getElementById('totalPrice').value=c;
+            $("#totalPrice").text(c);
+        }
+    </script>
+</body>
+</html>

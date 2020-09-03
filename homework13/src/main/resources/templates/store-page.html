@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Book store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{navigation :: navigation(BookStore)}"/>
+
+    <h1>Магазин книг</h1>
+<!--    <br>-->
+<!--    <h4>Фильтр:</h4>-->
+<!--    <form th:action="@{'/all'}" method="get">-->
+<!--        <div class="form-group">-->
+<!--            <label>Максимальный размер</label>-->
+<!--            <input th:value="${param.maxSize != null ? param.maxSize : null}" type="number" class="form-control form-control-sm" name="maxSize">-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Применить</button>-->
+<!--    </form>-->
+
+    <br>
+    <br>
+    <h4>Список книг:</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Описание</td>
+            <td>Цена</td>
+            <td>Год издания</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${books}">
+            <td th:text="${b.title}"></td>
+            <td th:text="${b.description}"></td>
+            <td th:text="${b.price}"></td>
+            <td th:text="${b.publishYear}"></td>
+            <td>
+                <form sec:authorize="isAuthenticated()" th:action="@{'/cart'}" method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.id}" name="id">
+                        <input hidden class="form-control form-control-sm" type="text" th:value="${b.title}" name="title">
+                        <input hidden class="form-control form-control-sm" type="text" th:value="${b.description}" name="description">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.price}" name="price" id="price">
+                        <input hidden class="form-control form-control-sm" type="number" th:value="${b.publishYear}" name="publishYear">
+
+                    </div>
+                    <div class="form-group">
+                        <input value="1" type="number" id="count" name="count" class="form-control input-number" min="1">
+                    </div>
+                <button class="btn btn-primary"  type="submit">Заказать</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
